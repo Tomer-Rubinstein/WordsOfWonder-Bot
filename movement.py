@@ -6,7 +6,6 @@ def guess_word(letter_cords: dict[tuple, str], word: str, device):
     for char in word:
         for key in letter_cords.keys():
             if char.lower() == letter_cords[key].lower():
-                print(char, "adding", key)
                 coordinate_sequence.append(key)
                 letter_cords[key] = '' # mark coordinate in letter_cords as used
                 break

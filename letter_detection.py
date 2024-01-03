@@ -2,17 +2,11 @@ import cv2
 import numpy as np
 import pytesseract
 import string
-from PIL import Image, ImageEnhance
-import movement
+from PIL import Image
 
-"""
-this solution works only if the letters wheel is present
-it can also find the letters (x,y) cords automatically
-
-so it needs conversion from (x,y) found to the real image after cut
-"""
 
 pytesseract.pytesseract.tesseract_cmd = r'D:\Tesseract\tesseract.exe'
+
 
 def find_letters_cords(image_filename):
     img = cv2.imread(image_filename)
@@ -72,13 +66,13 @@ def cut_letter_wheel(img: Image):
     upper = height/2 + 200
     lower = height-280
 
-    return ((left, upper, right, lower), img.crop((left, upper, right, lower)))
+    return ((left, upper), img.crop((left, upper, right, lower)))
 
 
 def transform_cords(dimensions, letters_cords: dict[tuple, str]):
     # perform domain expansion (ryoiki tenkai)
 
-    left, upper, right, lower = dimensions
+    left, upper = dimensions
 
     transformed_cords = {}
     for cord in letters_cords.keys():
@@ -93,15 +87,7 @@ def transform_cords(dimensions, letters_cords: dict[tuple, str]):
 def find_transformed_letters_cords(filename):
     img = Image.open(filename)
 
-    # transform the faded white of the wheel to absolute white
-    # enhancer = ImageEnhance.Contrast(img)
-    # img = enhancer.enhance(10)
-
     new_dimensions, letter_wheel_img = cut_letter_wheel(img)
-
-    # convert PIL img to opencv format (RGB -> BGR)
-    # letter_wheel_img = letter_wheel_img.convert("RGB")
-    # opencv_img = np.array(letter_wheel_img)[:, :, ::-1].copy()
     letter_wheel_img.save("wheel.png")
 
     letters_cords = find_letters_cords("wheel.png")

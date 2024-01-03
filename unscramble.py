@@ -1,7 +1,12 @@
 import requests
 import re
 
+
 def unscramble_letters(letters: str) -> list[str]:
+    """
+    parse results from https://wordunscrambler.me/unscramble/LETTERS
+    """
+
     html = requests.get(f'https://wordunscrambler.me/unscramble/{letters}').text
     regex_exp = r'data-word="(.*?)"'
 

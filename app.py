@@ -6,33 +6,44 @@ from gpt import GPT
 from unscramble import unscramble_letters
 import time
 
-client = AdbClient()
-devices = client.devices()
+def get_first_device():
+    client = AdbClient()
+    devices = client.devices()
 
-if len(devices) == 0:
-    print("no device attached")
-    quit()
+    if len(devices) == 0:
+        print("no device attached")
+        quit()
 
-device = devices[0]
+    return devices[0]
 
-screencap = device.screencap()
-with open("screen.png", "wb") as f:
-    f.write(screencap)
 
-letters_cords = find_transformed_letters_cords("screen.png")
-print("letters_cords:", letters_cords)
+def save_screenshot(device, out_filename):
+    screencap = device.screencap()
+    with open(out_filename, "wb") as f:
+        f.write(screencap)
 
-letters = "".join(list(letters_cords.values()))
+if __name__ == "__main__":
+    device = get_first_device()
+    save_screenshot(device, "screen.png")
 
-# gpt_api = GPT()
-# anagrams = gpt_api.find_anagrams(letters)
+    letters_cords = find_transformed_letters_cords("screen.png")
+    print("letters_cords:", letters_cords)
 
-anagrams = unscramble_letters(letters.lower())
+    letters = "".join(list(letters_cords.values()))
+    print("found letters:", letters)
 
-print("got anagarms:", anagrams)
-print("from letters:", letters)
+    # ---> USE GPT-3.5 WITH OPENAI API KEY
+    """
+    gpt_api = GPT()
+    anagrams = gpt_api.find_anagrams(letters)
+    """
 
-for anagram in anagrams:
-    print("trying:", anagram)
-    movement.guess_word(dict(letters_cords), anagram, device)
-    time.sleep(0.5)
+    # ---> OR USE ONLINE WORD SCRAMBLER (FASTER, MORE ACCURATE, NO API KEY)
+    anagrams = unscramble_letters(letters)
+
+    print("found anagrams:", anagrams)
+
+    for anagram in anagrams:
+        print("trying:", anagram)
+        movement.guess_word(dict(letters_cords), anagram, device)
+        time.sleep(0.1)

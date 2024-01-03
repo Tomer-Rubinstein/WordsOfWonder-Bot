@@ -18,8 +18,7 @@ class GPT:
         Write your answers in caps.
         Only include answers which have more than 3 letters.
         """
-        # Each anagram must have at least 4 letters and at most 6 letters.
-        # Do not repeat the same anagrams in your answer!
+
         print("\nSENDING PROMPT:\n" + prompt + "\n")
 
         chat_completion = client.chat.completions.create(
