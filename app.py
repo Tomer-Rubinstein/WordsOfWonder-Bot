@@ -3,6 +3,7 @@ import movement
 from letter_detection import find_transformed_letters_cords
 from PIL import Image
 from gpt import GPT
+from unscramble import unscramble_letters
 import time
 
 client = AdbClient()
@@ -23,8 +24,10 @@ print("letters_cords:", letters_cords)
 
 letters = "".join(list(letters_cords.values()))
 
-gpt_api = GPT()
-anagrams = gpt_api.find_anagrams(letters)
+# gpt_api = GPT()
+# anagrams = gpt_api.find_anagrams(letters)
+
+anagrams = unscramble_letters(letters.lower())
 
 print("got anagarms:", anagrams)
 print("from letters:", letters)
