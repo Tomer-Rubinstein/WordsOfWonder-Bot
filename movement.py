@@ -5,15 +5,15 @@ def guess_word(letter_cords: dict[tuple, str], word: str, device):
     coordinate_sequence = []
     for char in word:
         for key in letter_cords.keys():
-            if char == letter_cords[key]:
+            if char.lower() == letter_cords[key].lower():
                 print(char, "adding", key)
                 coordinate_sequence.append(key)
-                letter_cords[key] = None # mark coordinate in letter_cords as used
+                letter_cords[key] = '' # mark coordinate in letter_cords as used
                 break
 
-    if len(coordinate_sequence) < 2:
-        print("words of length 0 or 1 are not possible!")
-        quit()
+    if len(coordinate_sequence) <= 2:
+        print("words of length 0, 1 or 2 are not possible!")
+        return
 
     initial_x, initial_y = coordinate_sequence[0]
     final_x, final_y = coordinate_sequence[-1]

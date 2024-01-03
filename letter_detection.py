@@ -40,7 +40,6 @@ def find_letters_cords(image_filename):
 
             custom_config = r'-l eng --psm 10'
             ocr_result = pytesseract.image_to_string(segment, config=custom_config)
-            print(f"detected letter: {ocr_result}")
 
             if len(ocr_result) == 0:
                 continue
@@ -50,6 +49,10 @@ def find_letters_cords(image_filename):
             # because of their font, OCR detects 'I' as '|' (vertical line)
             if ocr_char == '|':
                 ocr_char = 'I'
+            if ocr_char == '-':
+                ocr_char = 'F'
+
+            print(f"detected letter: {ocr_char}")
 
             if ocr_char in string.ascii_letters:
                 relative_cord = (x, y)

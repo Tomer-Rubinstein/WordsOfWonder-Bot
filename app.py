@@ -2,6 +2,8 @@ from ppadb.client import Client as AdbClient
 import movement
 from letter_detection import find_transformed_letters_cords
 from PIL import Image
+from gpt import GPT
+import time
 
 client = AdbClient()
 devices = client.devices()
@@ -17,6 +19,17 @@ with open("screen.png", "wb") as f:
     f.write(screencap)
 
 letters_cords = find_transformed_letters_cords("screen.png")
-print(letters_cords)
+print("letters_cords:", letters_cords)
 
-movement.guess_word(letters_cords, "RIPEC", device)
+letters = "".join(list(letters_cords.values()))
+
+gpt_api = GPT()
+anagrams = gpt_api.find_anagrams(letters)
+
+print("got anagarms:", anagrams)
+print("from letters:", letters)
+
+for anagram in anagrams:
+    print("trying:", anagram)
+    movement.guess_word(dict(letters_cords), anagram, device)
+    time.sleep(0.5)
