@@ -88,9 +88,9 @@ def find_transformed_letters_cords(filename):
     img = Image.open(filename)
 
     new_dimensions, letter_wheel_img = cut_letter_wheel(img)
-    letter_wheel_img.save("wheel.png")
+    letter_wheel_img.save("images/wheel.png")
 
-    letters_cords = find_letters_cords("wheel.png")
+    letters_cords = find_letters_cords("images/wheel.png")
 
     letters_cords = transform_cords(new_dimensions, letters_cords)
     return letters_cords

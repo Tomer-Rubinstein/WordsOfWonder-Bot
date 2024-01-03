@@ -1,10 +1,10 @@
 from ppadb.client import Client as AdbClient
-import movement
-from letter_detection import find_transformed_letters_cords
-from PIL import Image
-from gpt import GPT
-from unscramble import unscramble_letters
 import time
+
+import movement
+from ocr import find_transformed_letters_cords
+from unscramble import unscramble_letters
+
 
 def get_first_device():
     client = AdbClient()
@@ -22,11 +22,12 @@ def save_screenshot(device, out_filename):
     with open(out_filename, "wb") as f:
         f.write(screencap)
 
+
 if __name__ == "__main__":
     device = get_first_device()
-    save_screenshot(device, "screen.png")
+    save_screenshot(device, "images/screen.png")
 
-    letters_cords = find_transformed_letters_cords("screen.png")
+    letters_cords = find_transformed_letters_cords("images/screen.png")
     print("letters_cords:", letters_cords)
 
     letters = "".join(list(letters_cords.values()))
